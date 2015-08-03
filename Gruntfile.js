@@ -253,16 +253,27 @@ module.exports = function(grunt) {
 
       wiredep: {
         files: ['bower.json'],
-        tasks: ['wiredep:dev', 'wiredep:test']
+        tasks: [
+          'wiredep:dev',
+          'wiredep:sass',
+          'wiredep:test',
+        ]
       }
     },
 
     // Wiredep tasks    - Inject bower dependencies automatically into source code
     // wiredep:dev      - Inject bower dependencies into html pages
+    // wiredep:sass     - Inject bower dependencies into scss files
     // wiredep:test     - Inject bower dependencies into karma config
     wiredep: {
       dev: {
         src: ['<%= config.dirs.app %>/index.html']
+      },
+
+      sass: {
+        src: [
+          '<%= config.dirs.static %>/styles/main.scss',
+        ],
       },
 
       test:{
@@ -314,6 +325,7 @@ module.exports = function(grunt) {
     grunt.task.run([
       'clean:dev',
       'coffee:dev',
+      'wiredep:sass',
       'sass:dev',
       'autoprefixer:dev',
       'wiredep:dev',
@@ -350,6 +362,7 @@ module.exports = function(grunt) {
     grunt.task.run([
       'clean:dev',
       'coffee:dev',
+      'wiredep:sass',
       'sass:dev',
       'autoprefixer:dev',
       'wiredep:dev',
