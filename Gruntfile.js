@@ -323,7 +323,6 @@ module.exports = function(grunt) {
       'wiredep:dev',
       'sass:dev',
       'autoprefixer:dev',
-      'wiredep:dev',
       'clean:build',
       'useminPrepare',
       'concat',
@@ -360,7 +359,6 @@ module.exports = function(grunt) {
       'wiredep:dev',
       'sass:dev',
       'autoprefixer:dev',
-      'wiredep:dev',
       'connect:livereload'
     ]);
 
