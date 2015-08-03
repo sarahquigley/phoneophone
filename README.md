@@ -62,8 +62,8 @@ npm install
 
 This will create the following folders:
 
-* `node\_modules` - contains the npm packages for tools needed.
-* `app/bower\_components` - contains bower packages for libraries needed.
+* `node_modules` - contains the npm packages for tools needed.
+* `app/bower_components` - contains bower packages for libraries needed.
 
 
 
@@ -75,7 +75,7 @@ This will create the following folders:
 Unit tests are written in [Jasmine 2.0](http://jasmine.github.io/), and run with the [Karma Test Runner](http://karma-runner.github.io/0.12/index.html). We provide a Karma configuration file to run them.
 
 * Configuration for karma is found in `karma.conf.js`
-* Unit tests are to be named as follows: `\*.spec.coffee`
+* Unit tests are to be named as follows: `*.spec.coffee`
 
 
 
