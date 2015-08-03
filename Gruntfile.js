@@ -272,7 +272,7 @@ module.exports = function(grunt) {
 
       sass: {
         src: [
-          '<%= config.dirs.static %>/styles/main.scss',
+          '<%= config.dirs.app %>/styles/main.scss',
         ],
       },
 
