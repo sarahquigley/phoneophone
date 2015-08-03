@@ -261,7 +261,7 @@ module.exports = function(grunt) {
     },
 
     // Wiredep tasks    - Inject bower dependencies automatically into source code
-    // wiredep:dev      - Inject bower dependencies into html pages
+    // wiredep:dev      - Inject bower dependencies into html pages and scss files
     // wiredep:test     - Inject bower dependencies into karma config
     wiredep: {
       dev: {
