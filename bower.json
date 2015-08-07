@@ -1,0 +1,13 @@
+{
+  "name": "coffeescript-app-skeleton",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "lodash": "~3.3.x"
+  }
+}
