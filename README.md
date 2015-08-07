@@ -1,6 +1,6 @@
-# Coffeescript App Skeleton
+# Phoneophone
 
-A skeleton for creating web applications in Coffeescript (and SCSS).
+A music making app for multi-touch devices.
 
 
 ## Installing dependencies
