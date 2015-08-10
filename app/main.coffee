@@ -15,6 +15,7 @@ class Tone
   stop: (seconds_from_now = 0) =>
     @oscillator.stop(seconds_from_now)
 
+  # Private methods
   _create_oscillator: (type, frequency) =>
     oscillatorNode = @audio_context.createOscillator()
     oscillatorNode.type = type
@@ -66,6 +67,28 @@ class AudioSpace
       crossfade =  @_crossfade_at_x(position.x)
       @tones[id].update(frequency, crossfade)
 
+  add_control: (tone_id, start_event, change_event, stop_event) =>
+    self = @
+    addEventListener start_event, (event) ->
+      self.on_start_event(event, tone_id)
+    addEventListener change_event, (event) ->
+      self.on_change_event(event, tone_id)
+    addEventListener stop_event, (event) ->
+      self.on_stop_event(event, tone_id)
+
+  on_start_event: (event, tone_id) =>
+    event.preventDefault()
+    @add_dual_tone(tone_id, {x: event.clientX, y: event.clientY})
+    @start_tone(tone_id)
+
+  on_change_event: (event, tone_id) =>
+    event.preventDefault()
+    @update_dual_tone(tone_id, {x: event.clientX, y: event.clientY})
+
+  on_stop_event: (event, tone_id) =>
+    event.preventDefault()
+    @stop_tone(tone_id)
+
   start_tone: (id) =>
     if _.isObject(@tones[id])
       @tones[id].start()
@@ -82,6 +105,7 @@ class AudioSpace
     _.each @tones, (tone) ->
       tone.stop()
 
+  # Private methods
   _frequency_at_y: (y) =>
     ((y / window.innerHeight) * (@max_frequency - @min_frequency)) + @min_frequency
 
@@ -89,17 +113,4 @@ class AudioSpace
     x / window.innerWidth
 
 audio_space = new AudioSpace(50, 1000)
-
-addEventListener 'mousedown', (event) ->
-  event.preventDefault()
-  audio_space.stop_tone('mouse')
-  audio_space.add_dual_tone('mouse', {x: event.clientX, y: event.clientY})
-  audio_space.start_tone('mouse')
-
-addEventListener 'mousemove', (event) ->
-  event.preventDefault()
-  audio_space.update_dual_tone('mouse', {x: event.clientX, y: event.clientY})
-
-addEventListener 'mouseup', (event) ->
-  event.preventDefault()
-  audio_space.stop_tone('mouse')
+audio_space.add_control('mouse', 'mousedown', 'mousemove', 'mouseup')
