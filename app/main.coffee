@@ -70,23 +70,23 @@ class AudioSpace
   add_control: (tone_id, start_event, change_event, stop_event) =>
     self = @
     addEventListener start_event, (event) ->
+      event.preventDefault()
       self.on_start_event(event, tone_id)
     addEventListener change_event, (event) ->
+      event.preventDefault()
       self.on_change_event(event, tone_id)
     addEventListener stop_event, (event) ->
+      event.preventDefault()
       self.on_stop_event(event, tone_id)
 
   on_start_event: (event, tone_id) =>
-    event.preventDefault()
     @add_dual_tone(tone_id, {x: event.clientX, y: event.clientY})
     @start_tone(tone_id)
 
   on_change_event: (event, tone_id) =>
-    event.preventDefault()
     @update_dual_tone(tone_id, {x: event.clientX, y: event.clientY})
 
   on_stop_event: (event, tone_id) =>
-    event.preventDefault()
     @stop_tone(tone_id)
 
   start_tone: (id) =>
@@ -114,3 +114,18 @@ class AudioSpace
 
 audio_space = new AudioSpace(50, 1000)
 audio_space.add_control('mouse', 'mousedown', 'mousemove', 'mouseup')
+
+addEventListener 'touchstart', (event) ->
+  event.preventDefault()
+  _.each event.changedTouches, (touch) ->
+    audio_space.on_start_event(touch, touch.identifier)
+
+addEventListener 'touchmove', (event) ->
+  event.preventDefault()
+  _.each event.changedTouches, (touch) ->
+    audio_space.on_change_event(touch, touch.identifier)
+
+addEventListener 'touchend', (event) ->
+  event.preventDefault()
+  _.each event.changedTouches, (touch) ->
+    audio_space.on_stop_event(touch, touch.identifier)
