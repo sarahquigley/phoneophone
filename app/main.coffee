@@ -126,4 +126,9 @@ class AudioSpace
   _crossfade_at_x: (x) =>
     x / window.innerWidth
 
-audio_space = new AudioSpace(50, 1000)
+window.PhoneoPhone = {}
+PhoneoPhone.Tone = Tone
+PhoneoPhone.DualTone = Tone
+PhoneoPhone.AudioSpace = AudioSpace
+
+audio_space = new PhoneoPhone.AudioSpace(50, 1000)
