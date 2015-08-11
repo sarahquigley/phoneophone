@@ -1,3 +1,4 @@
+# Represents a single tone (note)
 class Tone
   constructor: (@audio_context, @type, @frequency, @gain_value) ->
     @oscillator = @_create_oscillator(@type, @frequency)
@@ -30,6 +31,7 @@ class Tone
     gainNode
 
 
+# Represents a pair of crossfaded Tone objects of the same frequency
 class DualTone
   constructor: (@audio_context, @frequency, @crossfade = 0.5) ->
     @left = new Tone(@audio_context, 'sine', @frequency, @crossfade * 0.1)
@@ -49,61 +51,73 @@ class DualTone
     _.each [@left, @right], (tone) ->
       tone.stop(seconds_from_now)
 
-
+# Enables control over a set of DualTone objects via mouse and/or touch interactions
 class AudioSpace
   constructor: (@min_frequency = 500, @max_frequency = 1500) ->
     AudioContext = window.AudioContext || window.webkitAudioContext
     @audio_context = new AudioContext()
-    @tones = {}
+    @dual_tones = {}
+    @add_mouse_control()
+    @add_touch_control()
 
-  add_dual_tone: (id, position) =>
+  add_dual_tone: (dual_tone_id, position) =>
     frequency =  @_frequency_at_y(position.y)
     crossfade =  @_crossfade_at_x(position.x)
-    @tones[id] = new DualTone(@audio_context, frequency, crossfade)
+    @dual_tones[dual_tone_id] = new DualTone(@audio_context, frequency, crossfade)
 
-  update_dual_tone: (id, position) =>
-    if _.isObject(@tones[id])
+  update_dual_tone: (dual_tone_id, position) =>
+    if _.isObject(@dual_tones[dual_tone_id])
       frequency =  @_frequency_at_y(position.y)
       crossfade =  @_crossfade_at_x(position.x)
-      @tones[id].update(frequency, crossfade)
+      @dual_tones[dual_tone_id].update(frequency, crossfade)
 
-  add_control: (tone_id, start_event, change_event, stop_event) =>
+  add_mouse_control: (dual_tone_id, start_event, change_event, stop_event) =>
     self = @
-    addEventListener start_event, (event) ->
+    dual_tone_id = 'mouse'
+    addEventListener 'mousedown', (event) ->
       event.preventDefault()
-      self.on_start_event(event, tone_id)
-    addEventListener change_event, (event) ->
+      self.on_start_event(event, dual_tone_id)
+    addEventListener 'mousemove', (event) ->
       event.preventDefault()
-      self.on_change_event(event, tone_id)
-    addEventListener stop_event, (event) ->
+      self.on_change_event(event, dual_tone_id)
+    addEventListener 'mouseup', (event) ->
       event.preventDefault()
-      self.on_stop_event(event, tone_id)
+      self.on_stop_event(event, dual_tone_id)
 
-  on_start_event: (event, tone_id) =>
-    @add_dual_tone(tone_id, {x: event.clientX, y: event.clientY})
-    @start_tone(tone_id)
+  add_touch_control: () =>
+    self = @
+    addEventListener 'touchstart', (event) ->
+      event.preventDefault()
+      _.each event.changedTouches, (touch) ->
+        self.on_start_event(touch, touch.identifier)
 
-  on_change_event: (event, tone_id) =>
-    @update_dual_tone(tone_id, {x: event.clientX, y: event.clientY})
+    addEventListener 'touchmove', (event) ->
+      event.preventDefault()
+      _.each event.changedTouches, (touch) ->
+        self.on_change_event(touch, touch.identifier)
 
-  on_stop_event: (event, tone_id) =>
-    @stop_tone(tone_id)
+    addEventListener 'touchend', (event) ->
+      event.preventDefault()
+      _.each event.changedTouches, (touch) ->
+        self.on_stop_event(touch, touch.identifier)
 
-  start_tone: (id) =>
-    if _.isObject(@tones[id])
-      @tones[id].start()
+  on_start_event: (event, dual_tone_id) =>
+    @add_dual_tone(dual_tone_id, {x: event.clientX, y: event.clientY})
+    @start_tone(dual_tone_id)
 
-  stop_tone: (id) =>
-    if _.isObject(@tones[id])
-      @tones[id].stop()
+  on_change_event: (event, dual_tone_id) =>
+    @update_dual_tone(dual_tone_id, {x: event.clientX, y: event.clientY})
 
-  start_tones: () =>
-    _.each @tones, (tone) ->
-      tone.start()
+  on_stop_event: (event, dual_tone_id) =>
+    @stop_tone(dual_tone_id)
 
-  stop_tones: () =>
-    _.each @tones, (tone) ->
-      tone.stop()
+  start_tone: (dual_tone_id) =>
+    if _.isObject(@dual_tones[dual_tone_id])
+      @dual_tones[dual_tone_id].start()
+
+  stop_tone: (dual_tone_id) =>
+    if _.isObject(@dual_tones[dual_tone_id])
+      @dual_tones[dual_tone_id].stop()
 
   # Private methods
   _frequency_at_y: (y) =>
@@ -113,19 +127,3 @@ class AudioSpace
     x / window.innerWidth
 
 audio_space = new AudioSpace(50, 1000)
-audio_space.add_control('mouse', 'mousedown', 'mousemove', 'mouseup')
-
-addEventListener 'touchstart', (event) ->
-  event.preventDefault()
-  _.each event.changedTouches, (touch) ->
-    audio_space.on_start_event(touch, touch.identifier)
-
-addEventListener 'touchmove', (event) ->
-  event.preventDefault()
-  _.each event.changedTouches, (touch) ->
-    audio_space.on_change_event(touch, touch.identifier)
-
-addEventListener 'touchend', (event) ->
-  event.preventDefault()
-  _.each event.changedTouches, (touch) ->
-    audio_space.on_stop_event(touch, touch.identifier)
