@@ -16,6 +16,7 @@ module.exports = function(grunt) {
       scripts: [
         '<%= config.dirs.app %>/tone.coffee',
         '<%= config.dirs.app %>/audiospace.coffee',
+        '<%= config.dirs.app %>/audiovisual.coffee',
         '<%= config.dirs.app %>/main.coffee',
       ],
       tests: [
