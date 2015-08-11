@@ -14,6 +14,8 @@ module.exports = function(grunt) {
     },
     files: {
       scripts: [
+        '<%= config.dirs.app %>/tone.coffee',
+        '<%= config.dirs.app %>/audiospace.coffee',
         '<%= config.dirs.app %>/main.coffee',
       ],
       tests: [
@@ -80,7 +82,7 @@ module.exports = function(grunt) {
     connect: {
       options: {
         port: 9000,
-        hostname: 'localhost', // Change this to '0.0.0.0' to access the server from outside.
+        hostname: '0.0.0.0', // Change this to '0.0.0.0' to access the server from outside.
         livereload: 35729
       },
 
