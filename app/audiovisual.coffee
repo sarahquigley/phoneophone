@@ -1,6 +1,6 @@
 class Wave
   constructor: (@id, frequency, gain_value, @type, @yAxis) ->
-    @timeModifier = 1
+    @timeModifier = 0.5
     @lineWidth = 3
     @amplitude = @_amplitude_from_gain_value(gain_value)
     @wavelength = @_wavelength_from_frequency(frequency)
