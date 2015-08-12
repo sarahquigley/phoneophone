@@ -15,34 +15,38 @@ class AudioSpace
   add_dual_tone: (dual_tone_id, position) =>
     frequency =  @_frequency_at_y(position.y)
     crossfade =  @_crossfade_at_x(position.x)
-    dual_tone = @dual_tones[dual_tone_id] = new PhoneoPhone.DualTone(@audio_context, frequency, crossfade)
+    @dual_tones[dual_tone_id] = new PhoneoPhone.DualTone(@audio_context, frequency, crossfade)
+    @add_dual_tone_visuals(dual_tone_id, position.y)
 
-    _.each dual_tone.tones, (tone, tone_key) ->
+  add_dual_tone_visuals: (dual_tone_id, yAxis) =>
+    _.each  @dual_tones[dual_tone_id].tones, (tone, tone_key) ->
       wave_id = "#{dual_tone_id}_#{tone_key}"
-      @visuals.add_wave(wave_id, tone.frequency, tone.gain_value, tone.type, position.y)
+      @visuals.add_wave(wave_id, tone.frequency, tone.gain_value, tone.type, yAxis)
     , @
 
   update_dual_tone: (dual_tone_id, position) =>
-    dual_tone = @dual_tones[dual_tone_id]
-    if _.isObject(dual_tone)
+    if _.isObject(@dual_tones[dual_tone_id])
       frequency =  @_frequency_at_y(position.y)
       crossfade =  @_crossfade_at_x(position.x)
-      dual_tone.update(frequency, crossfade)
+      @dual_tones[dual_tone_id].update(frequency, crossfade)
+      @update_dual_tone_visuals(dual_tone_id, position.y)
 
-      _.each dual_tone.tones, (tone, tone_key) ->
-        wave_id = "#{dual_tone_id}_#{tone_key}"
-        @visuals.update_wave(wave_id, tone.frequency, tone.gain_value, position.y)
-      , @
+  update_dual_tone_visuals: (dual_tone_id, yAxis) =>
+    _.each  @dual_tones[dual_tone_id].tones, (tone, tone_key) ->
+      wave_id = "#{dual_tone_id}_#{tone_key}"
+      @visuals.update_wave(wave_id, tone.frequency, tone.gain_value, yAxis)
+    , @
 
   delete_dual_tone: (dual_tone_id) =>
-    dual_tone = @dual_tones[dual_tone_id]
-    if _.isObject(dual_tone)
-      _.each dual_tone.tones, (tone, tone_key) ->
-        wave_id = "#{dual_tone_id}_#{tone_key}"
-        @visuals.delete_wave(wave_id)
-      , @
+    if @dual_tones[dual_tone_id]
+      @delete_dual_tone_visuals(dual_tone_id)
       delete @dual_tones[dual_tone_id]
 
+  delete_dual_tone_visuals: (dual_tone_id) =>
+    _.each  @dual_tones[dual_tone_id].tones, (tone, tone_key) ->
+      wave_id = "#{dual_tone_id}_#{tone_key}"
+      @visuals.delete_wave(wave_id)
+    , @
 
   add_mouse_control: (dual_tone_id, start_event, change_event, stop_event) =>
     self = @
