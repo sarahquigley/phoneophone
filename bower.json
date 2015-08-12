@@ -8,6 +8,7 @@
     "tests"
   ],
   "dependencies": {
-    "lodash": "~3.3.x"
+    "lodash": "~3.3.x",
+    "sine-waves": "git@github.com:sarahquigley/sine-waves.git#master"
   }
 }

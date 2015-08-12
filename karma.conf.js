@@ -7,6 +7,7 @@ module.exports = function(config){
     files : [
       // bower:js
       'app/bower_components/lodash/lodash.js',
+      'app/bower_components/sine-waves/sine-waves.js',
       // endbower
       '.dev/main.js',
       'app/**/*.spec.coffee',
