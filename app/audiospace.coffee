@@ -65,6 +65,7 @@ class AudioSpace
   stop_tone: (dual_tone_id) =>
     if _.isObject(@dual_tones[dual_tone_id])
       @dual_tones[dual_tone_id].stop()
+      delete @dual_tones[dual_tone_id]
 
   # Private methods
   _frequency_at_y: (y) =>
