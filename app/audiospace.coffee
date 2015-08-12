@@ -19,9 +19,8 @@ class AudioSpace
 
     _.each dual_tone.tones, (tone, tone_key) ->
       wave_id = "#{dual_tone_id}_#{tone_key}"
-      @visuals.add_wave(wave_id, tone.frequency, tone.gain_value, dual_tone.type, position.y)
+      @visuals.add_wave(wave_id, tone.frequency, tone.gain_value, tone.type, position.y)
     , @
-
 
   update_dual_tone: (dual_tone_id, position) =>
     dual_tone = @dual_tones[dual_tone_id]
@@ -36,13 +35,14 @@ class AudioSpace
       , @
 
   delete_dual_tone: (dual_tone_id) =>
-    if _.isObject(@dual_tones[dual_tone_id])
-      delete @dual_tones[dual_tone_id]
-
+    dual_tone = @dual_tones[dual_tone_id]
+    if _.isObject(dual_tone)
       _.each dual_tone.tones, (tone, tone_key) ->
         wave_id = "#{dual_tone_id}_#{tone_key}"
         @visuals.delete_wave(wave_id)
       , @
+      delete @dual_tones[dual_tone_id]
+
 
   add_mouse_control: (dual_tone_id, start_event, change_event, stop_event) =>
     self = @

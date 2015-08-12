@@ -2,23 +2,23 @@ class Wave
   constructor: (@id, frequency, gain_value, @type, @yAxis) ->
     @timeModifier = 1
     @lineWidth = 3
-    @amplitude = @_amplitude_from_gain_value(frequency)
-    @wavelength = @_wavelength_from_frequency(gain_value)
+    @amplitude = @_amplitude_from_gain_value(gain_value)
+    @wavelength = @_wavelength_from_frequency(frequency)
     @segmentLength = 1
     @strokeStyle = @_stroke_style_from_frequency_and_gain_value(frequency, gain_value)
 
   update: (frequency, gain_value, yAxis) =>
-    @amplitude = @_amplitude_from_gain_value(frequency)
-    @wavelength = @_wavelength_from_frequency(gain_value)
+    @amplitude = @_amplitude_from_gain_value(gain_value)
+    @wavelength = @_wavelength_from_frequency(frequency)
     @strokeStyle = @_stroke_style_from_frequency_and_gain_value(frequency, gain_value)
     @yAxis = yAxis
 
   # Private methods
   _wavelength_from_frequency: (frequency) =>
-    frequency
+    (1 / frequency) * 1000 * 2
 
   _amplitude_from_gain_value: (gain_value) =>
-    gain_value
+    gain_value * 1000
 
   _stroke_style_from_frequency_and_gain_value: (frequency, gain_value) =>
     'rgba(255, 255, 255, 0.5)'
