@@ -21,7 +21,7 @@ class AudioSpace
   add_dual_tone_visuals: (dual_tone_id, yAxis) =>
     _.each  @dual_tones[dual_tone_id].tones, (tone, tone_key) ->
       wave_id = "#{dual_tone_id}_#{tone_key}"
-      @visuals.add_wave(wave_id, tone.frequency, tone.gain_value, tone.type, yAxis)
+      @visuals.add_wave(wave_id, tone.frequency, tone.gain_value, tone.type, yAxis, @min_frequency, @max_frequency)
     , @
 
   update_dual_tone: (dual_tone_id, position) =>
@@ -34,7 +34,7 @@ class AudioSpace
   update_dual_tone_visuals: (dual_tone_id, yAxis) =>
     _.each  @dual_tones[dual_tone_id].tones, (tone, tone_key) ->
       wave_id = "#{dual_tone_id}_#{tone_key}"
-      @visuals.update_wave(wave_id, tone.frequency, tone.gain_value, yAxis)
+      @visuals.update_wave(wave_id, tone.frequency, tone.gain_value, yAxis, @min_frequency, @max_frequency)
     , @
 
   delete_dual_tone: (dual_tone_id) =>
