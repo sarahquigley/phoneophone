@@ -1,6 +1,6 @@
 # Enables control over a set of DualTone objects via mouse and/or touch interactions
 class AudioSpace
-  constructor: (@min_frequency = 500, @max_frequency = 1500) ->
+  constructor: (@el, @min_frequency = 500, @max_frequency = 1500) ->
     AudioContext = window.AudioContext || window.webkitAudioContext
     @audio_context = new AudioContext()
     @dual_tones = {}
@@ -21,29 +21,29 @@ class AudioSpace
   add_mouse_control: (dual_tone_id, start_event, change_event, stop_event) =>
     self = @
     dual_tone_id = 'mouse'
-    addEventListener 'mousedown', (event) ->
+    @el.addEventListener 'mousedown', (event) ->
       event.preventDefault()
       self.on_start_event(event, dual_tone_id)
-    addEventListener 'mousemove', (event) ->
+    @el.addEventListener 'mousemove', (event) ->
       event.preventDefault()
       self.on_change_event(event, dual_tone_id)
-    addEventListener 'mouseup', (event) ->
+    @el.addEventListener 'mouseup', (event) ->
       event.preventDefault()
       self.on_stop_event(event, dual_tone_id)
 
   add_touch_control: () =>
     self = @
-    addEventListener 'touchstart', (event) ->
+    @el.addEventListener 'touchstart', (event) ->
       event.preventDefault()
       _.each event.changedTouches, (touch) ->
         self.on_start_event(touch, touch.identifier)
 
-    addEventListener 'touchmove', (event) ->
+    @el.addEventListener 'touchmove', (event) ->
       event.preventDefault()
       _.each event.changedTouches, (touch) ->
         self.on_change_event(touch, touch.identifier)
 
-    addEventListener 'touchend', (event) ->
+    @el.addEventListener 'touchend', (event) ->
       event.preventDefault()
       _.each event.changedTouches, (touch) ->
         self.on_stop_event(touch, touch.identifier)

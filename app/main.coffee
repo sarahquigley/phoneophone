@@ -1,1 +1,2 @@
-audio_space = new PhoneoPhone.AudioSpace(50, 1000)
+el = document.getElementById('audiospace')
+audio_space = new PhoneoPhone.AudioSpace(el, 50, 1000)
