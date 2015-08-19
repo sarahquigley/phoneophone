@@ -15,7 +15,6 @@ class AudioSpace
   update_dual_tone: (dual_tone_id, position) =>
     if _.isObject(@dual_tones[dual_tone_id])
       frequency =  @_frequency_at_y(position.y)
-      console.log(frequency)
       crossfade =  @_crossfade_at_x(position.x)
       @dual_tones[dual_tone_id].update(frequency, crossfade)
 
