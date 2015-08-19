@@ -1,11 +1,11 @@
 # Enables control over a set of DualTone objects via mouse and/or touch interactions
 class AudioSpace
-  constructor: (@el, @min_frequency = 500, @max_frequency = 1500) ->
+  constructor: (@el, frequencies) ->
     AudioContext = window.AudioContext || window.webkitAudioContext
+    @scale = new PhoneoPhone.Scale(frequencies)
     @audio_context = new AudioContext()
     @dual_tones = {}
-    @add_mouse_control()
-    @add_touch_control()
+    @add_controls()
 
   add_dual_tone: (dual_tone_id, position) =>
     frequency =  @_frequency_at_y(position.y)
@@ -17,6 +17,11 @@ class AudioSpace
       frequency =  @_frequency_at_y(position.y)
       crossfade =  @_crossfade_at_x(position.x)
       @dual_tones[dual_tone_id].update(frequency, crossfade)
+
+  add_controls: () ->
+    @add_mouse_control()
+    @add_touch_control()
+    @add_deviceorientation_control()
 
   add_mouse_control: (dual_tone_id, start_event, change_event, stop_event) =>
     self = @
@@ -48,6 +53,14 @@ class AudioSpace
       _.each event.changedTouches, (touch) ->
         self.on_stop_event(touch, touch.identifier)
 
+  add_deviceorientation_control: () =>
+    self = @
+    window.addEventListener 'deviceorientation', (event) ->
+      beta = Math.abs(event.beta)
+      self.scale.discrete = beta >= 30 && beta <= 150
+      self.scale.skip = [] if beta < 60 || beta > 120
+      self.scale.skip = [2, 6] if beta >= 60 && beta <= 120
+
   on_start_event: (event, dual_tone_id) =>
     @add_dual_tone(dual_tone_id, {x: event.clientX, y: event.clientY})
     @start_tone(dual_tone_id)
@@ -69,7 +82,8 @@ class AudioSpace
 
   # Private methods
   _frequency_at_y: (y) =>
-    ((y / window.innerHeight) * (@max_frequency - @min_frequency)) + @min_frequency
+    frequency = ((y / window.innerHeight) * (@scale.max_frequency - @scale.min_frequency)) + @scale.min_frequency
+    @scale.get_nearest_frequency(frequency)
 
   _crossfade_at_x: (x) =>
     x / window.innerWidth
