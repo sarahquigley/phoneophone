@@ -18,6 +18,10 @@ class AudioSpace
       crossfade =  @_crossfade_at_x(position.x)
       @dual_tones[dual_tone_id].update(frequency, crossfade)
 
+  delete_dual_tone: (dual_tone_id) =>
+    if _.isObject(@dual_tones[dual_tone_id])
+      delete @dual_tones[dual_tone_id]
+
   add_controls: () ->
     @add_mouse_control()
     @add_touch_control()
@@ -70,6 +74,7 @@ class AudioSpace
 
   on_stop_event: (event, dual_tone_id) =>
     @stop_tone(dual_tone_id)
+    @delete_dual_tone(dual_tone_id)
 
   start_tone: (dual_tone_id) =>
     if _.isObject(@dual_tones[dual_tone_id])
@@ -78,7 +83,6 @@ class AudioSpace
   stop_tone: (dual_tone_id) =>
     if _.isObject(@dual_tones[dual_tone_id])
       @dual_tones[dual_tone_id].stop()
-      delete @dual_tones[dual_tone_id]
 
   # Private methods
   _frequency_at_y: (y) =>
