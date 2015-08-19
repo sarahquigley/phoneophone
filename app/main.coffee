@@ -7,4 +7,5 @@ frequencies = [
   55 ,49 ,43.65 ,41.20 ,36.71 ,32.70 ,30.87
 ]
 el = document.getElementById('audiospace')
-audio_space = new PhoneoPhone.AudioSpace(el, frequencies)
+if _.isObject(el)
+  audio_space = new PhoneoPhone.AudioSpace(el, frequencies)
