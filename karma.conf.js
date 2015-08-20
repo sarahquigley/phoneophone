@@ -8,6 +8,7 @@ module.exports = function(config){
       // bower:js
       'app/bower_components/lodash/lodash.js',
       // endbower
+      'node_modules/web-audio-test-api/build/web-audio-test-api.js',
       '.dev/main.js',
       'app/**/*.spec.coffee',
     ],
