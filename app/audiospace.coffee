@@ -7,15 +7,17 @@ class AudioSpace
       new PhoneoPhone.DiscreteScale(frequencies)
       new PhoneoPhone.DiscreteScale(frequencies, [2,6])
     ]
+    @scale = @scales[0]
+    @dual_tones = {}
+
     if _.isUndefined(AudioContext)
       @el.innerHTML = "<div id=\"audio-context-unsupported\">Unfortunately, your browser lacks
         support for the Web Audio API. In order to use PhoneoPhone, upgrade to the latest version
         of your web browser. If the latest version of your browser does not supprt the Web Audio
         API, try a different web browser.</div>"
-    @scale = @scales[0]
-    @audio_context = new AudioContext()
-    @dual_tones = {}
-    @add_controls()
+    else
+      @audio_context = new AudioContext()
+      @add_controls()
 
   add_dual_tone: (dual_tone_id, frequency, crossfade) =>
     @dual_tones[dual_tone_id] = new PhoneoPhone.DualTone(@audio_context, frequency, crossfade)
