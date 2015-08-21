@@ -36,6 +36,7 @@
     "karma-mocha-reporter": "~1.0.0",
     "karma-ng-html2js-preprocessor": "^0.1.2",
     "load-grunt-tasks": "~3.1.0",
+    "mock-dom-element": "git@github.com:sarahquigley/mock-dom-element.git",
     "time-grunt": "~1.1.0",
     "web-audio-test-api": "^0.3.6"
   },

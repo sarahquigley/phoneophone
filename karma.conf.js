@@ -9,6 +9,7 @@ module.exports = function(config){
       'app/bower_components/lodash/lodash.js',
       // endbower
       'node_modules/web-audio-test-api/build/web-audio-test-api.js',
+      'node_modules/mock-dom-element/build/main.js',
       '.dev/main.js',
       'app/**/*.spec.coffee',
     ],
