@@ -10,8 +10,8 @@ class ContinuousScale
 class DiscreteScale
   constructor: (frequencies, skip_positions=[], frequencies_per_octave = 7) ->
     @frequencies = @_skip_frequencies(_.sortBy(frequencies), skip_positions, frequencies_per_octave)
-    @min_frequency = _.first(frequencies)
-    @max_frequency = _.last(frequencies)
+    @min_frequency = _.first(@frequencies)
+    @max_frequency = _.last(@frequencies)
 
   get_active_frequency: (value) ->
     continuous_freq = @min_frequency + value * (@max_frequency - @min_frequency)
