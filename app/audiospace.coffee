@@ -7,15 +7,11 @@ class AudioSpace
     @dual_tones = {}
     @add_controls()
 
-  add_dual_tone: (dual_tone_id, position) =>
-    frequency =  @_frequency_at_y(position.y)
-    crossfade =  @_crossfade_at_x(position.x)
+  add_dual_tone: (dual_tone_id, frequency, crossfade) =>
     @dual_tones[dual_tone_id] = new PhoneoPhone.DualTone(@audio_context, frequency, crossfade)
 
-  update_dual_tone: (dual_tone_id, position) =>
+  update_dual_tone: (dual_tone_id, frequency, crossfade) =>
     if _.isObject(@dual_tones[dual_tone_id])
-      frequency =  @_frequency_at_y(position.y)
-      crossfade =  @_crossfade_at_x(position.x)
       @dual_tones[dual_tone_id].update(frequency, crossfade)
 
   delete_dual_tone: (dual_tone_id) =>
@@ -66,11 +62,15 @@ class AudioSpace
       self.scale.skip = [2, 6] if beta >= 60 && beta <= 120
 
   on_start_event: (event, dual_tone_id) =>
-    @add_dual_tone(dual_tone_id, {x: event.clientX, y: event.clientY})
+    frequency =  @frequency_at_y(event.clientY)
+    crossfade =  @crossfade_at_x(event.clientX)
+    @add_dual_tone(dual_tone_id, frequency, crossfade)
     @start_tone(dual_tone_id)
 
   on_change_event: (event, dual_tone_id) =>
-    @update_dual_tone(dual_tone_id, {x: event.clientX, y: event.clientY})
+    frequency =  @frequency_at_y(event.clientY)
+    crossfade =  @crossfade_at_x(event.clientX)
+    @update_dual_tone(dual_tone_id, frequency, crossfade)
 
   on_stop_event: (event, dual_tone_id) =>
     @stop_tone(dual_tone_id)
@@ -84,13 +84,11 @@ class AudioSpace
     if _.isObject(@dual_tones[dual_tone_id])
       @dual_tones[dual_tone_id].stop()
 
-  # Private methods
-  _frequency_at_y: (y) =>
-    frequency = ((y / window.innerHeight) * (@scale.max_frequency() - @scale.min_frequency())) + @scale.min_frequency()
-    @scale.get_nearest_frequency(frequency)
+  frequency_at_y: (y) =>
+    @scale.get_active_frequency(y / @el.clientHeight)
 
-  _crossfade_at_x: (x) =>
-    x / window.innerWidth
+  crossfade_at_x: (x) =>
+    x / @el.clientWidth
 
 window.PhoneoPhone = window.PhoneoPhone || {}
 PhoneoPhone.AudioSpace = AudioSpace

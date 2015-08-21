@@ -32,7 +32,7 @@ describe 'DualTone', ->
   audio_context = new AudioContext()
 
   beforeEach ->
-    dual_tone = new PhoneoPhone.DualTone(audio_context, 100)
+    dual_tone = new PhoneoPhone.DualTone(audio_context, 100, 0.5, 1)
 
   describe '#update', ->
     beforeEach ->
@@ -40,9 +40,9 @@ describe 'DualTone', ->
       spyOn(dual_tone.right, 'update')
       dual_tone.update(200, 0.6)
 
-    it 'should update both tones, passing new frequency and crossfade to their update methods', ->
-      expect(dual_tone.left.update).toHaveBeenCalledWith(200, (0.4 * 0.1))
-      expect(dual_tone.right.update).toHaveBeenCalledWith(200, (0.6 * 0.1))
+    it 'should update both tones with new frequency and crossfade', ->
+      expect(dual_tone.left.update).toHaveBeenCalledWith(200, 0.4)
+      expect(dual_tone.right.update).toHaveBeenCalledWith(200, 0.6)
 
   describe '#start', ->
     beforeEach ->
