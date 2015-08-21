@@ -2,7 +2,12 @@
 class AudioSpace
   constructor: (@el, frequencies) ->
     AudioContext = window.AudioContext || window.webkitAudioContext
-    @scale = new PhoneoPhone.Scale(frequencies)
+    @scales = [
+      new PhoneoPhone.ContinuousScale(frequencies)
+      new PhoneoPhone.DiscreteScale(frequencies)
+      new PhoneoPhone.DiscreteScale(frequencies, [2,6])
+    ]
+    @scale = @scales[0]
     @audio_context = new AudioContext()
     @dual_tones = {}
     @add_controls()
@@ -53,10 +58,14 @@ class AudioSpace
 
   add_deviceorientation_control: () =>
     window.addEventListener 'deviceorientation', (event) =>
-      beta = Math.abs(event.beta)
-      @scale.discrete = beta >= 30 && beta <= 150
-      @scale.skip = [] if beta < 60 || beta > 120
-      @scale.skip = [2, 6] if beta >= 60 && beta <= 120
+      beta = Math.abs(90 - Math.abs(event.beta))
+      if beta <= 30
+        idx = 2
+      else if idx <= 60
+        idx = 1
+      else
+        idx = 0
+      @scale = @scales[idx]
 
   on_start_event: (event, dual_tone_id) =>
     frequency =  @frequency_at_y(event.clientY)
