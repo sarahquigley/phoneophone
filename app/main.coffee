@@ -6,6 +6,6 @@ frequencies = [
   110 ,98 ,87.31 ,82.41 ,73.42 ,65.41 ,61.74,
   55 ,49 ,43.65 ,41.20 ,36.71 ,32.70 ,30.87
 ]
-el = document.getElementById('audiospace')
+el = document.getElementById('audio_space')
 if _.isObject(el)
   audio_space = new PhoneoPhone.AudioSpace(el, frequencies)
