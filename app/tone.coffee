@@ -34,13 +34,13 @@ class Tone
 # Represents a pair of crossfaded Tone objects of the same frequency
 class DualTone
   constructor: (@audio_context, @frequency, @crossfade = 0.5, @gain_value_scaling_factor = 0.1) ->
-    @left = new Tone(@audio_context, 'sine', @frequency, @_gain_value(@crossfade, 'left'))
+    @left = new Tone(@audio_context, 'sine', @frequency, @_gain_value(1 - @crossfade))
     @right = new Tone(@audio_context, 'sawtooth', @frequency, @_gain_value(@crossfade))
 
   update: (frequency, crossfade) =>
     @frequency = frequency
     @crossfade = crossfade
-    @left.update(@frequency, @_gain_value(crossfade, 'left'))
+    @left.update(@frequency, @_gain_value(1 - crossfade))
     @right.update(@frequency, @_gain_value(crossfade))
 
   start: (seconds_from_now = 0) =>
@@ -52,9 +52,7 @@ class DualTone
       tone.stop(seconds_from_now)
 
   # Private methods
-  _gain_value: (crossfade, position) =>
-    if position == 'left'
-      return (1 - crossfade) * @gain_value_scaling_factor
+  _gain_value: (crossfade) =>
     crossfade * @gain_value_scaling_factor
 
 window.PhoneoPhone = window.PhoneoPhone || {}
