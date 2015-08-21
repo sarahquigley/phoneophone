@@ -62,14 +62,14 @@ class AudioSpace
       self.scale.skip = [2, 6] if beta >= 60 && beta <= 120
 
   on_start_event: (event, dual_tone_id) =>
-    frequency =  @_frequency_at_y(event.clientY)
-    crossfade =  @_crossfade_at_x(event.clientX)
+    frequency =  @frequency_at_y(event.clientY)
+    crossfade =  @crossfade_at_x(event.clientX)
     @add_dual_tone(dual_tone_id, frequency, crossfade)
     @start_tone(dual_tone_id)
 
   on_change_event: (event, dual_tone_id) =>
-    frequency =  @_frequency_at_y(event.clientY)
-    crossfade =  @_crossfade_at_x(event.clientX)
+    frequency =  @frequency_at_y(event.clientY)
+    crossfade =  @crossfade_at_x(event.clientX)
     @update_dual_tone(dual_tone_id, frequency, crossfade)
 
   on_stop_event: (event, dual_tone_id) =>
@@ -84,12 +84,10 @@ class AudioSpace
     if _.isObject(@dual_tones[dual_tone_id])
       @dual_tones[dual_tone_id].stop()
 
-  # Private methods
-  _frequency_at_y: (y) =>
-    frequency = ((y / @el.clientHeight) * (@scale.max_frequency() - @scale.min_frequency())) + @scale.min_frequency()
-    @scale.get_nearest_frequency(frequency)
+  frequency_at_y: (y) =>
+    @scale.get_active_frequency(y / @el.clientHeight)
 
-  _crossfade_at_x: (x) =>
+  crossfade_at_x: (x) =>
     x / @el.clientWidth
 
 window.PhoneoPhone = window.PhoneoPhone || {}
