@@ -69,7 +69,7 @@ class AudioSpace
       beta = Math.abs(90 - Math.abs(event.beta))
       if beta <= 30
         idx = 2
-      else if idx <= 60
+      else if beta <= 60
         idx = 1
       else
         idx = 0
