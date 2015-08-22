@@ -6,6 +6,19 @@ frequencies = [
   110 ,98 ,87.31 ,82.41 ,73.42 ,65.41 ,61.74,
   55 ,49 ,43.65 ,41.20 ,36.71 ,32.70 ,30.87
 ]
-el = document.getElementById('audio_space')
-if _.isObject(el)
-  audio_space = new PhoneoPhone.AudioSpace(el, frequencies)
+
+welcome_el = document.getElementById('welcome')
+make_music_el = document.getElementById('make-music')
+instructions_el = document.getElementById('instructions')
+got_it_el = document.getElementById('got-it')
+audio_space_el = document.getElementById('audio-space')
+
+if _.isObject(make_music_el)
+  make_music_el.addEventListener 'click', (event) ->
+    welcome_el.style.display = 'none'
+    instructions_el.style.display  = 'block'
+
+if _.isObject(got_it_el)
+  got_it_el.addEventListener 'click', (event) ->
+    instructions_el.style.display = 'none'
+    audio_space = new PhoneoPhone.AudioSpace(audio_space_el, frequencies)
