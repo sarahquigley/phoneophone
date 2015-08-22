@@ -1,5 +1,11 @@
 // bower:scss
+@import "../bower_components/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
 // endbower
+
+* {
+  box-sizing: border-box;
+  font-family: 'Coda', sans-serif;
+}
 
 html, body{
   height: 100%;
@@ -7,18 +13,36 @@ html, body{
   margin: 0;
 }
 
-#audio_space{
+#audio-space{
   height: 100%;
   width: 100%;
-  background: black;
+  background: rgba(10, 10, 10, 1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-#audio-context-unsupported{
-  margin: auto;
-  width: 60%;
-  padding: 10%;
-  color: white;
-  font-size: 20px;
-  font-family: sans-serif;
-  font-weight: 200;
+.audio-space-section{
+  color: rgb(120, 120, 120);
+  text-align: center;
+
+  h1{
+    font-size: 56px;
+    font-family: 'Monofett', sans-serif;
+    font-weight: normal;
+    color: rgb(186,238,70);
+  }
+
+  h4{
+    font-weight: normal;
+  }
+
+  p{
+    margin: auto;
+    width: 60%;
+  }
+
+  button{
+    margin: 10px 0 20px 0;
+  }
 }

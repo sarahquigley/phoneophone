@@ -6,7 +6,9 @@ module.exports = function(config){
     // List of files/patterns to load in the browser
     files : [
       // bower:js
+      'app/bower_components/jquery/dist/jquery.js',
       'app/bower_components/lodash/lodash.js',
+      'app/bower_components/bootstrap-sass/assets/javascripts/bootstrap.js',
       // endbower
       'node_modules/web-audio-test-api/build/web-audio-test-api.js',
       'node_modules/mock-dom-element/build/main.js',
