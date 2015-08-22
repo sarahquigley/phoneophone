@@ -44,9 +44,10 @@ class AudioSpace
     @el.addEventListener 'mousemove', (event) =>
       event.preventDefault()
       @on_change_event(event, dual_tone_id)
-    @el.addEventListener 'mouseup', (event) =>
-      event.preventDefault()
-      @on_stop_event(event, dual_tone_id)
+    _.each ['mouseup', 'mouseout', 'mouseleave'], (event_type) =>
+      @el.addEventListener event_type, (event) =>
+        event.preventDefault()
+        @on_stop_event(event, dual_tone_id)
 
   add_touch_control: () =>
     @el.addEventListener 'touchstart', (event) =>
@@ -64,12 +65,17 @@ class AudioSpace
       _.each event.changedTouches, (touch) =>
         @on_stop_event(touch, touch.identifier)
 
+    @el.addEventListener 'touchcancel', (event) =>
+      event.preventDefault()
+      _.each event.changedTouches, (touch) =>
+        @on_stop_event(touch, touch.identifier)
+
   add_deviceorientation_control: () =>
     window.addEventListener 'deviceorientation', (event) =>
       beta = Math.abs(90 - Math.abs(event.beta))
       if beta <= 30
         idx = 2
-      else if idx <= 60
+      else if beta <= 60
         idx = 1
       else
         idx = 0
