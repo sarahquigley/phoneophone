@@ -11,10 +11,11 @@ class AudioSpace
     @dual_tones = {}
 
     if _.isUndefined(AudioContext)
-      @el.innerHTML = "<div id=\"audio-context-unsupported\">Unfortunately, your browser lacks
-        support for the Web Audio API. In order to use PhoneoPhone, upgrade to the latest version
-        of your web browser. If the latest version of your browser does not supprt the Web Audio
-        API, try a different web browser.</div>"
+      @el.innerHTML = "<div id=\"audio-context-unsupported\">Oh no! PhoneoPhone requires the Web
+        Audio API, which your browser does not support. In the future, we hope to add support
+        for browsers like yours. For now, to use PhoneoPhone, please upgrade your web browser
+        to the latest version. If the latest version of your browser does not support the Web 
+        Audio API, please try a different web browser. Thank you!</div>"
     else
       @audio_context = new AudioContext()
       @add_controls()
