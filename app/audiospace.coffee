@@ -102,7 +102,7 @@ class AudioSpace
       @dual_tones[dual_tone_id].stop()
 
   frequency_at_y: (y) =>
-    @scale.get_active_frequency(y / @el.clientHeight)
+    @scale.get_active_frequency(1 - (y / @el.clientHeight))
 
   crossfade_at_x: (x) =>
     x / @el.clientWidth
