@@ -133,7 +133,7 @@ describe 'AudioSpace', ->
       spyOn(audio_space.scale, 'get_active_frequency').and.returnValue(50)
       for n in [0..4]
         expect(audio_space.frequency_at_y(n * 100)).toEqual(50)
-        expect(audio_space.scale.get_active_frequency).toHaveBeenCalledWith(n / 4)
+        expect(audio_space.scale.get_active_frequency).toHaveBeenCalledWith(1 - (n / 4))
         audio_space.scale.get_active_frequency.calls.reset()
       
   describe '#crossfade_at_x', ->
