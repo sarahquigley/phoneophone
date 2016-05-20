@@ -1,6 +1,6 @@
 # Phoneophone
 
-A music making app for multi-touch devices.
+An somewhat awesome sound-making app for multi-touch devices.
 
 
 ## Installing dependencies
