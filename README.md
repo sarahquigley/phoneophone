@@ -2,6 +2,7 @@
 
 A music making app for multi-touch devices.
 
+View live version: [Phoneophone](http://sarahquigley.net/phoneophone/)
 
 ## Installing dependencies
 
